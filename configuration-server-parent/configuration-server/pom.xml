@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>com.noveria.server</groupId>
+		<groupId>com.babcock.server</groupId>
 		<artifactId>configuration-server-parent</artifactId>
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
@@ -12,6 +12,12 @@
 	<version>1.0.0-SNAPSHOT</version>
 	
 	<packaging>jar</packaging>
+
+	<properties>
+		<server.jar.name>config-server-${parent.version}</server.jar.name>
+		<executable.jar.postfix>exec</executable.jar.postfix>
+		<executable.server.jar.name>${server.jar.name}-${executable.jar.postfix}</executable.server.jar.name>
+	</properties>
 
 	<dependencies>
 		<dependency>
@@ -30,30 +36,16 @@
 		</dependency>
 
 		<dependency>
+			<groupId>net.logstash.logback</groupId>
+			<artifactId>logstash-logback-encoder</artifactId>
+			<version>4.9</version>
+		</dependency>
+
+		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
 	</dependencies>
-
-	<profiles>
-		<profile>
-			<id>dev-config-server</id>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-			</activation>
-			<properties>
-				<github.config.url>https://github.com/SleepingTalent/ms-demo-dev-configuration-properties</github.config.url>
-				<server.jar.name>dev-configuration-server</server.jar.name>
-			</properties>
-		</profile>
-		<profile>
-			<id>qa-config-server</id>
-			<properties>
-				<github.config.url>https://github.com/SleepingTalent/ms-demo-qa-configuration-properties</github.config.url>
-				<server.jar.name>qa-configuration-server</server.jar.name>
-			</properties>
-		</profile>
-	</profiles>
 
 	<build>
 		<finalName>${server.jar.name}</finalName>
@@ -79,6 +71,9 @@
 				<executions>
 					<execution>
 						<id>build-config-server-zip</id>
+						<configuration>
+							<appendAssemblyId>true</appendAssemblyId>
+						</configuration>
 						<phase>verify</phase>
 						<goals>
 							<goal>single</goal>
@@ -108,8 +103,6 @@
 								</resource>
 							</resources>
 						</configuration>
-
-
 					</execution>
 				</executions>
 			</plugin>
@@ -121,6 +114,9 @@
 						<goals>
 							<goal>repackage</goal>
 						</goals>
+						<configuration>
+							<classifier>${executable.jar.postfix}</classifier>
+						</configuration>
 					</execution>
 				</executions>
 			</plugin>

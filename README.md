@@ -1,1 +1,2 @@
-# ms-demo-configuration-server
+# configuration-server
+Spring Cloud Based Configuration Server
