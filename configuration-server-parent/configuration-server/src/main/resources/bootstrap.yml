@@ -36,6 +36,18 @@ logging:
 ---
 
 spring:
+  profiles: test
+  cloud:
+    config:
+      server:
+        native:
+          searchLocations: classpath:config
+logging:
+  config: classpath:logback.xml
+
+---
+
+spring:
   profiles: qa
   cloud:
     config:
